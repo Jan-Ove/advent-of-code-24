@@ -1,21 +1,24 @@
+import kotlin.math.abs
+
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
+    fun part1(input: List<Pair<Int, Int>>): Int {
+        val firstList = input.map { it.first }.sorted()
+        val secondList = input.map { it.second }.sorted()
+
+        return firstList.zip(secondList)
+            .sumOf { abs(it.first - it.second) }
     }
 
-    fun part2(input: List<String>): Int {
-        return input.size
+    fun part2(input: List<Pair<Int, Int>>): Int {
+        val firstList = input.map { it.first }
+        val secondList = input.map { it.second }.groupingBy { it }.eachCount()
+
+        return firstList.sumOf { it * (secondList[it] ?: 0) }
     }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
-
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    // Read the input from the `src/Day01.txt` file.
     val input = readInput("Day01")
+        .map { it.split("   ").map { it.trim().toInt() } }
+        .map { Pair(it[0], it[1]) }
     part1(input).println()
     part2(input).println()
 }
